@@ -18,10 +18,22 @@ public class Test {
         mySingleList.addLast(56);
         mySingleList.addLast(67);
 
+        mySingleList.addIndex(1 , 10);
+        mySingleList.addIndex(7, 20);
+
+
 
         mySingleList.display();
         System.out.println();
         System.out.println("节点个数：");
         System.out.println(mySingleList.size());
+
+        System.out.println(mySingleList.contains(13)); //false
+
+        mySingleList.remove(12);
+        mySingleList.display();
+
+        mySingleList.clear();
+        mySingleList.display();
     }
 }
