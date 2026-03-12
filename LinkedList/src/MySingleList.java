@@ -166,6 +166,11 @@ public class MySingleList implements ILinkedList{
         return size;
     }
     public void clear() {
+        ListNode cur = head;
+        while(cur != null){
+            cur.next = null;
+            cur.val = 0;
+        }
         head = null;
     }
 
@@ -179,5 +184,224 @@ public class MySingleList implements ILinkedList{
             System.out.print (cur.val + " ");
             cur = cur.next;
         }
+    }
+
+
+    public ListNode reverseList() {
+        //1.判断链表是不是空的
+        if(head == null) {
+            return null;
+        }
+        //2. 判断是不是只有1个节点
+        if(head.next == null) {
+            return head;
+        }
+        //3. 说明至少有2个节点及其以上
+        ListNode cur = head.next;
+        head.next = null;
+
+        while(cur != null) {
+            ListNode curN = cur.next;
+            //这2行代码在进行头插
+            cur.next = head;
+            head = cur;
+            //
+            cur = curN;
+        }
+        return head;
+    }
+
+    /**
+     * 重载的方法
+     * @param newHead
+     */
+    public void display(ListNode newHead) {
+        ListNode cur = newHead;
+        while (cur != null) {
+            System.out.print(cur.val+" ");
+            cur = cur.next;
+        }
+        System.out.println();
+    }
+
+
+    /**
+     * 中间节点
+     * @param
+     * @return
+     */
+    public ListNode middleNode() {
+
+        ListNode fast= head;
+        ListNode slow = head;
+
+        while (fast != null && fast.next != null) {
+            //while (fast.next != null && fast != null) {
+            fast = fast.next.next;
+            slow = slow.next;
+        }
+        return slow;
+    }
+
+    /**
+     * 倒数第K个节点
+     * @param k
+     * @return
+     */
+    public int kthToLast(int k) {
+        //1.判断k的值的 合法性
+        if(k <= 0 || head == null) {
+            return -1;
+        }
+
+        //2.先让fast走K-1步
+        ListNode fast = head;
+        ListNode slow = head;
+        int count = 0;
+        while (count != k-1) {
+            fast = fast.next;
+            if(fast == null) {
+                return -1;
+            }
+            count++;
+        }
+        //3.开始同时出发
+        while (fast.next != null) {
+            fast = fast.next;
+            slow = slow.next;
+        }
+        return slow.val;
+    }
+
+
+    public boolean chkPalindrome() {
+        // write code here
+        if(head == null) {
+            return true;
+        }
+        //1.找中间节点
+        ListNode fast = head;
+        ListNode slow = head;
+        while(fast != null && fast.next != null) {
+            fast = fast.next.next;
+            slow = slow.next;
+        }
+        //2.slow此时指向了中间位置 开始翻转后半部分
+        ListNode cur = slow.next;
+        while(cur != null) {
+            ListNode curN = cur.next;
+            cur.next = slow;
+            slow = cur;
+            cur = curN;
+        }
+        //3. 此时head和cur一直走 直到相遇
+        while(head != slow) {
+            if(head.val != slow.val) {
+                return false;
+            }
+            //判断偶数的情况
+            if(head.next == slow) {
+                return true;
+            }
+            head = head.next;
+            slow = slow.next;
+        }
+        return true;
+    }
+
+    public ListNode partition(ListNode pHead, int x) {
+        // write code here
+        if(pHead == null) {
+            return null;
+        }
+
+        ListNode bs = null;
+        ListNode be = null;
+        ListNode as = null;
+        ListNode ae = null;
+
+        ListNode cur = pHead;
+        while( cur != null) {
+            if(cur.val < x) {
+                //小于x
+                if(bs == null) {
+                    //说明这是第一次进行插入
+                    bs = be = cur;
+                }else {
+                    be.next = cur;
+                    be = be.next;
+                }
+            }else {
+                //大于等于x
+                if(as == null) {
+                    as = ae = cur;
+                }else {
+                    ae.next = cur;
+                    ae = ae.next;
+                }
+            }
+            cur = cur.next;
+        }
+        //第一个段 没有数据
+        if(bs == null) {
+            return as;
+        }
+        be.next = as;
+        if(as != null) {
+            ae.next = null;
+        }
+        return bs;
+    }
+
+
+    public boolean hasCycle(ListNode head) {
+
+        ListNode fast = head;
+        ListNode slow = head;
+
+        while(fast != null && fast.next != null) {
+            fast = fast.next.next;
+            slow = slow.next;
+            if(fast == slow) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public void createLoop() {
+        ListNode cur = head;
+        while (cur.next != null) {
+            cur = cur.next;
+        }
+
+        cur.next = head.next;
+    }
+
+    public ListNode detectCycle(ListNode head) {
+        ListNode fast = head;
+        ListNode slow = head;
+
+        while(fast != null && fast.next != null) {
+            fast = fast.next.next;
+            slow = slow.next;
+            if(fast == slow) {
+                break;
+            }
+        }
+
+        //1.没有环    2.有环（遇到break结束）
+        if(fast == null || fast.next == null) {
+            return null;//没有环
+        }
+
+        fast = head;
+        while(fast != slow) {
+            fast = fast.next;
+            slow = slow.next;
+        }
+
+        return slow;
+
     }
 }
