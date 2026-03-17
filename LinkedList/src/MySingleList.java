@@ -205,7 +205,6 @@ public class MySingleList implements ILinkedList{
             //这2行代码在进行头插
             cur.next = head;
             head = cur;
-            //
             cur = curN;
         }
         return head;
