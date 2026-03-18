@@ -1,3 +1,8 @@
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Queue;
+
 public class BinaryTree {
     public static class TreeNode{
         TreeNode left;
@@ -127,4 +132,139 @@ public class BinaryTree {
         }
         return null;
     }
+
+    //层序遍历
+    void levelOrder(TreeNode root){
+        Queue<TreeNode> queue = new LinkedList<>();
+        queue.offer(root);
+        while(!queue.isEmpty()){
+            TreeNode ret = queue.poll();
+            System.out.print(ret.val + " ");
+            if(ret.left != null) queue.offer(ret.left);
+            if(ret.right != null) queue.offer(ret.right);
+        }
+    }
+
+
+    public List<List<Character>> levelOrder2(TreeNode root) {
+        List<List<Character>> ret = new ArrayList<>();
+        Queue<TreeNode> queue = new LinkedList<>();
+        queue.offer(root);
+        while(!queue.isEmpty()){
+            List<Character> rows = new ArrayList<>();
+            int count = queue.size();
+            while(count != 0){
+                TreeNode node = queue.poll();
+                rows.add(node.val);
+                count--;
+                if(node.left != null) queue.offer(node.left);
+                if(node.right != null) queue.offer(node.right);
+            }
+            ret.add(rows);
+        }
+        return ret;
+    }
+
+    /**
+     * 判断两棵树是否相同
+     * @param p
+     * @param q
+     * @return
+     */
+    public boolean isSameTree(TreeNode p, TreeNode q) {
+        if(p == null && q != null || p != null && q ==null){
+            return false;
+        }
+
+        if(p == null && q == null) return true;
+        if(p.val != q.val) return false;
+
+        return isSameTree(p.left , q.left) && isSameTree(p.right , q.right);
+    }
+
+    /**
+     * 判断是否为子树
+     * @param root
+     * @param subRoot
+     * @return
+     */
+    public boolean isSubtree(TreeNode root, TreeNode subRoot) {
+        if(root == null && subRoot == null){
+            return true;
+        }
+        if(root == null && subRoot != null){
+            return false;
+        }
+        if(isSameTree(root , subRoot)){
+            return true;
+        }
+
+        return isSubtree(root.left , subRoot) || isSubtree(root.right , subRoot);
+    }
+
+    /**
+     * 翻转二叉树
+     * @param root
+     * @return
+     */
+    public TreeNode invertTree(TreeNode root) {
+        if(root == null) return null;
+
+        if(root.left == null && root.right == null) return root;
+        TreeNode tmp;
+        tmp = root.left;
+        root.left = root.right;
+        root.right = tmp;
+
+        invertTree(root.left);
+        invertTree(root.right);
+
+        return root;
+    }
+
+    /**
+     * 使用返回值实现二叉树的翻转
+     * @param root
+     * @return
+     */
+    public TreeNode invertTree2(TreeNode root) {
+        // 递归终止条件：节点为空，直接返回
+        if (root == null) {
+            return null;
+        }
+
+        // 递归翻转左子树
+        TreeNode left = invertTree(root.left);
+        // 递归翻转右子树
+        TreeNode right = invertTree(root.right);
+
+        // 交换当前节点的左右子树
+        root.left = right;
+        root.right = left;
+
+        return root;
+    }
+
+    public boolean isBalanced(TreeNode root) {
+
+    }
+
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
