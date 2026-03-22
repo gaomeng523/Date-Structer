@@ -245,9 +245,45 @@ public class BinaryTree {
         return root;
     }
 
+    /**
+     * 判断平衡二叉树
+     * @param root
+     * @return
+     */
     public boolean isBalanced(TreeNode root) {
+        if(root == null) return true;
+        int leftH = getHeight(root.left);
+        int rightH = getHeight(root.right);
 
+        if(Math.abs(leftH - rightH) > 1){
+            return false;
+        }
+        return isBalanced(root.left) && isBalanced(root.right);
     }
+
+    /**
+     * 判断对称二叉树
+     * @param root
+     * @return
+     */
+    public boolean isSymmetric(TreeNode root) {
+        if(root == null) return true;
+
+        return isSymmetricChild(root.left , root.right);
+    }
+
+
+    public boolean isSymmetricChild(TreeNode leftTree, TreeNode rightTree) {
+
+        if(leftTree == null && rightTree != null || leftTree != null && rightTree == null) return false;
+
+        if(leftTree == null && rightTree == null) return true;
+        if(leftTree.val != rightTree.val) return false;
+
+        return isSymmetricChild(leftTree.left , rightTree.right) && isSymmetricChild(leftTree.right , rightTree.left);
+    }
+
+
 
 }
 
