@@ -2,9 +2,6 @@ import java.util.Map;
 import java.util.TreeMap;
 
 public class TestMap {
-
-
-
     public static void main(String[] args) {
         Map<String , String> map = new TreeMap<>();
         //put插入方法
